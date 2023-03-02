@@ -6,3 +6,6 @@ GRANT ALL PRIVILEGES ON *.* TO 'aaron'@'%';
 create database blog;
 CREATE DATABASE `DB이름` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 use blog;
+
+
+CREATE DATABASE blog CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
