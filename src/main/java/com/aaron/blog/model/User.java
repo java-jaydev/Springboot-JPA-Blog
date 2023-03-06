@@ -4,11 +4,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+// @DynamicInsert // insert할때 null 인 컬럼을 제외하고 insert 해준다.
 @Entity // User 클래스가 MySQL에 테이블이 생성된다.
 public class User {
 
@@ -36,9 +38,12 @@ public class User {
 	
 	@Column(nullable = false, length = 50)
 	private String email;
-	
-	@ColumnDefault("'user'")
-	private String role; // Enum -> admin, user, manager
+
+	// @ColumnDefault("'user'")
+	// DB는 RoleType이라는게 없다.
+	// ENUM을 사용했다는걸 알려줘야한다.
+	@Enumerated(EnumType.STRING)
+	private RoleType role; // Enum -> admin, user, manager
 	
 	@CreationTimestamp
 	private Timestamp createDate;
