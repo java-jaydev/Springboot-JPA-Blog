@@ -30,7 +30,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 프로젝트에 연결된 DB의 넘버링 전략을 따라간다. AUTO, IDENTITY, TABLE
 	private Long id; // 시퀀스, auto_increment
 	
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false, length = 30, unique = true)
 	private String username; // 아이디
 	
 	@Column(nullable = false, length = 100)
