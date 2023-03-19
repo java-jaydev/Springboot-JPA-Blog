@@ -1,13 +1,15 @@
 package com.aaron.blog.service;
 
-import com.aaron.blog.model.User;
-import com.aaron.blog.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import com.aaron.blog.model.User;
+import com.aaron.blog.repository.UserRepository;
+
+
 
 /*
 * 1. 트랜잭션 관리
@@ -27,4 +29,12 @@ public class UserService {
     public void 회원가입(User user) {
         userRepository.save(user);
     }
+    
 }
+
+/*
+ * @Transactional(readOnly = true) // SELECT할 때(서비스 시작 시) 트랜잭션 시작, 서비스 종료 시 트랜잭션
+ * 종료 때 까지 정합성 유지 public User 로그인(User user) { return
+ * userRepository.findByUsernameAndPassword(user.getUsername(),
+ * user.getPassword()); }
+ */
