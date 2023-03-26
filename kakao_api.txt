@@ -1,0 +1,4 @@
+fc5b93a26b93a962108d58a33ede0b4d
+
+http://localhost:8000/auth/kakao/callback
+http://localhost:8000/auth/kakao/logout
