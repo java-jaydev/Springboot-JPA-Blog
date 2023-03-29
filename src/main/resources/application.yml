@@ -41,6 +41,19 @@ spring:
       enabled: true
     restart:
       enabled: true
+      
+aaron:
+  key: aaron931227-4321
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
 # com.mysql.cj.jdbc.Driver
 # com.mysql.jdbc.Driver
 # datasource 의 mysql 드라이버에 cj가 들어간 이유는 mysql 6점대 이상 버전부터는 해당 드라이버를 사용하고 그 이전 드라이버는 cj가 없는 com.mysql.jdbc.Driver를 사용한다.

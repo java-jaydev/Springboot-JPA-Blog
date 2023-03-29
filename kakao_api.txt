@@ -2,3 +2,49 @@ fc5b93a26b93a962108d58a33ede0b4d
 
 http://localhost:8000/auth/kakao/callback
 http://localhost:8000/auth/kakao/logout
+
+
+GET HTTP/1.1
+Host: kauth.kakao.com
+/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code
+
+# 로그인 요청 주소(GET)
+https://kauth.kakao.com/oauth/authorize?client_id=fc5b93a26b93a962108d58a33ede0b4d&redirect_uri=http://localhost:8000/auth/kakao/callback&response_type=code
+
+# 응답받은 코드
+http://localhost:8000/auth/kakao/callback?code=7riXOknEns-jofoIzYwf9mzpSwanJ_1gMvAD7xJGQ2wIAQVuVA5u6kNdkyzL5lrRlfTfYQo9dJkAAAGHIyI54A
+
+
+POST /oauth/token HTTP/1.1
+Host: kauth.kakao.com
+Content-type: application/x-www-form-urlencoded;charset=utf-8 (key=value)
+
+# 토큰 발급 요청 주소(POST)
+https://kauth.kakao.com/oauth/token
+
+Parameter
+Name	Type	Description	Required
+grant_type	String	authorization_code로 고정	O
+client_id	String	앱 REST API 키
+[내 애플리케이션] > [앱 키]에서 확인 가능	O
+redirect_uri	String	인가 코드가 리다이렉트된 URI	O
+code	String	인가 코드 받기 요청으로 얻은 인가 코드	O
+client_secret	String	토큰 발급 시, 보안을 강화하기 위해 추가 확인하는 코드
+[내 애플리케이션] > [보안]에서 설정 가능
+ON 상태인 경우 필수 설정해야 함	X
+
+grant_type=authorization_code
+client_id=fc5b93a26b93a962108d58a33ede0b4d
+redirect_uri=http://localhost:8000/auth/kakao/callback
+code=
+
+
+# 사용자 정보 가져오기 https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info
+
+GET/POST /v2/user/me HTTP/1.1
+Host: kapi.kakao.com
+Authorization: Bearer ${ACCESS_TOKEN}/KakaoAK ${APP_ADMIN_KEY}
+Content-type: application/x-www-form-urlencoded;charset=utf-8
+
+https://kapi.kakao.com/v2/user/me
+

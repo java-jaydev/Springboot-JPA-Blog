@@ -3,14 +3,11 @@ package com.aaron.blog.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aaron.blog.model.RoleType;
 import com.aaron.blog.model.User;
 import com.aaron.blog.repository.UserRepository;
 
@@ -38,6 +35,7 @@ public class UserService {
         String rawPassword = user.getPassword();
         String encPassword = encoder.encode(rawPassword);
         user.setPassword(encPassword);
+        user.setRole(RoleType.USER);
         userRepository.save(user);
     }
     
@@ -47,11 +45,21 @@ public class UserService {
     		return new IllegalArgumentException("회원 찾기 실패");
     	});
 
-        String rawPassword = user.getPassword();
-        String encPassword = encoder.encode(rawPassword);
-        
-    	persistance.setPassword(encPassword);
-    	persistance.setEmail(user.getEmail());
+    	if (persistance.getOauth() == null || persistance.getOauth().equals("")) {
+            String rawPassword = user.getPassword();
+            String encPassword = encoder.encode(rawPassword);
+            
+        	persistance.setPassword(encPassword);
+        	persistance.setEmail(user.getEmail());
+    	}
+    }
+    
+    @Transactional(readOnly = true)
+    public User 회원찾기(String username) {
+    	User user = userRepository.findByUsername(username).orElseGet(()->{
+    		return null;
+    	});
+    	return user;
     }
 }
 
