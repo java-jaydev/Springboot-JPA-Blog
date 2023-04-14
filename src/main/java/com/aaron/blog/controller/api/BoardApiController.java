@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aaron.blog.config.auth.PrincipalDetail;
 import com.aaron.blog.dto.ResponseDto;
 import com.aaron.blog.model.Board;
+import com.aaron.blog.model.Reply;
 import com.aaron.blog.service.BoardService;
 
 @RestController
@@ -38,4 +39,11 @@ public class BoardApiController {
 		boardService.수정하기(id, board);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
+	
+	@PostMapping("/api/board/{boardId}/reply")
+	public ResponseDto<Integer> saveReply(@PathVariable long boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principal) {
+		boardService.댓글쓰기(principal.getUser(), boardId, reply);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
+	
 }
