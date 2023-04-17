@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aaron.blog.config.auth.PrincipalDetail;
+import com.aaron.blog.dto.ReplySaveRequestDto;
 import com.aaron.blog.dto.ResponseDto;
 import com.aaron.blog.model.Board;
-import com.aaron.blog.model.Reply;
 import com.aaron.blog.service.BoardService;
 
 @RestController
@@ -41,9 +41,9 @@ public class BoardApiController {
 	}
 	
 	@PostMapping("/api/board/{boardId}/reply")
-	public ResponseDto<Integer> saveReply(@PathVariable long boardId, @RequestBody Reply reply, @AuthenticationPrincipal PrincipalDetail principal) {
-		boardService.댓글쓰기(principal.getUser(), boardId, reply);
+	public ResponseDto<Integer> saveReply(@RequestBody ReplySaveRequestDto replySaveRequestDto) {
+		boardService.댓글쓰기(replySaveRequestDto);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-	}
+	}	
 	
 }

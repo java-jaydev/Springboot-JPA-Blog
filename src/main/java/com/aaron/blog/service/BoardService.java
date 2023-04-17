@@ -1,5 +1,7 @@
 package com.aaron.blog.service;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+
 import java.sql.Timestamp;
 
 import org.slf4j.Logger;
@@ -10,11 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aaron.blog.dto.ReplySaveRequestDto;
 import com.aaron.blog.model.Board;
 import com.aaron.blog.model.Reply;
 import com.aaron.blog.model.User;
 import com.aaron.blog.repository.BoardRepository;
 import com.aaron.blog.repository.ReplyRepository;
+import com.aaron.blog.repository.UserRepository;
 
 @Service
 public class BoardService {
@@ -27,6 +31,9 @@ public class BoardService {
     
     @Autowired
     private ReplyRepository replyRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void 글쓰기(Board board, User user) {
@@ -64,13 +71,22 @@ public class BoardService {
     }
     
     @Transactional
-    public void 댓글쓰기(User user, long boardId, Reply requestReply) {
-    	requestReply.setUser(user);
-    	requestReply.setBoard(boardRepository.findById(boardId).orElseThrow(()->{
-    		return new IllegalArgumentException("댓글 쓰기 실패 : 게시글을 찾을 수 없습니다.");
-    	}));
+    public void 댓글쓰기(ReplySaveRequestDto replySaveRequestDto) {
+    	User user = userRepository.findById(replySaveRequestDto.getUserId()).orElseThrow(()->{
+    		return new IllegalArgumentException("댓글 쓰기 실패 : 유저 id를 찾을 수 없습니다.");
+    	});
     	
-    	replyRepository.save(requestReply);
+    	Board board = boardRepository.findById(replySaveRequestDto.getBoardId()).orElseThrow(()->{
+    		return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
+    	}); // 영속화 완료
+    	
+    	Reply reply = Reply.builder()
+    			.user(user)
+    			.board(board)
+    			.content(replySaveRequestDto.getContent())
+    			.build();
+    	
+    	replyRepository.save(reply);
     }
     
 }
