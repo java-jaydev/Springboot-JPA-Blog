@@ -8,12 +8,12 @@ public class ReplyObjectTest {
 
 	@Test
 	public void toStringTest() {
-		Reply reply = Reply
-				.id(1)
+		Reply reply = Reply.builder()
+				.id(1L)
 				.user(null)
 				.board(null)
 				.content("안녕")
-				.builder();
+				.build();
 		
 		System.out.println(reply);
 	}
