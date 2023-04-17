@@ -28,9 +28,12 @@ let index = {
 			contentType: "application/json; charset=utf-8", // body 데이터가 어떤 타입인지 (MIME)
 			dataType: "json",  // 응답이 왔을때 javascript object 로 변경해줌
 		}).done(function(resp) {
-			alert("회원가입이 완료되었습니다.");
-			// alert(JSON.stringify(resp));
-			location.href="/";
+			if (resp.status === 500) {
+				alert("회원가입에 실패하였습니다.");
+			} else {
+				alert("회원가입이 완료되었습니다.");
+				location.href="/";
+			}
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
