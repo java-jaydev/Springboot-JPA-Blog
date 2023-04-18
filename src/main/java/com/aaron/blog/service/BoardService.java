@@ -72,4 +72,9 @@ public class BoardService {
     	replyRepository.nativeInsertReply(replySaveRequestDto.getUserId(), replySaveRequestDto.getBoardId(), replySaveRequestDto.getContent());
     }
     
+    @Transactional
+    public void 댓글삭제(Long replyId) {
+    	replyRepository.deleteById(replyId);
+    }
+    
 }
